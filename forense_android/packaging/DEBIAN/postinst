@@ -1,0 +1,23 @@
+#!/bin/bash
+# Script post-instalación del paquete forense-android
+
+set -e
+
+echo "Configurando Sistema Forense Android..."
+
+# Crear directorio de datos de usuario
+mkdir -p /var/lib/forense-android/casos
+chmod 700 /var/lib/forense-android
+chown -R $SUDO_USER:$SUDO_USER /var/lib/forense-android 2>/dev/null || true
+
+# Crear directorio de configuración
+mkdir -p /etc/forense-android
+chmod 755 /etc/forense-android
+
+# Crear enlace simbólico si no existe
+if [ ! -L /usr/bin/forense-android ]; then
+    ln -sf /usr/share/forense-android/launcher.sh /usr/bin/forense-android
+fi
+
+echo "✅ Sistema Forense Android instalado correctamente."
+echo "   Ejecute 'forense-android' para iniciar la aplicación."
