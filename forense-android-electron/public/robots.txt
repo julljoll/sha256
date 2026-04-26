@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://tudominio.com/sitemap.xml
+
+# No indexar archivos sensibles
+Disallow: /api/
+Disallow: /admin/
+Disallow: /*.json$

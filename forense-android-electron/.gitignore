@@ -1,0 +1,38 @@
+# Vercel
+.vercel
+/node_modules
+/.npm
+/dist-electron
+*.log
+
+# Environment
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Build
+dist
+build
+
+# Electron specific
+*.deb
+*.exe
+*.dmg
+*.AppImage
+
+# Test coverage
+coverage/
+
+# Temporary files
+tmp/
+temp/
