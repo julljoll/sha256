@@ -1,38 +1,27 @@
-# Vercel
-.vercel
-/node_modules
-/.npm
-/dist-electron
-*.log
+# Examples 1:
 
+# Example 2 (Project with artifacts):
+# Compiled and build artifacts
+*.pyc
+pycache/
+*.o
+*.obj
+dist/
+build/
+# Dependencies
+.venv/
+venv/
+node_modules/
+# Logs and temp files
+*.log
+*.tmp
+*.swp
 # Environment
 .env
 .env.local
-.env.production
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode
-.idea
-*.swp
-*.swo
-
-# Build
-dist
-build
-
-# Electron specific
-*.deb
-*.exe
-*.dmg
-*.AppImage
-
-# Test coverage
-coverage/
-
-# Temporary files
-tmp/
-temp/
+.env.
+# Editors
+.vscode/
+.idea/
+# Original rules preserved
+*.log
