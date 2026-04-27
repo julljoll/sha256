@@ -1,0 +1,25 @@
+marco_legal:
+  constitucion:
+    - "Debido proceso"
+    - "Tutela judicial efectiva"
+    - "Privacidad de las comunicaciones"
+  leyes:
+    - nombre: "COPP (Codigo Organico Procesal Penal)"
+      articulos:
+        - "Art. 188: Resguardo de evidencias"
+        - "Regimen de licitud de la prueba"
+        - "Obligatoriedad de cadena de custodia"
+    - nombre: "Ley Especial contra Delitos Informaticos (2001)"
+    - nombre: "Ley de Infogobierno"
+    - nombre: "Ley sobre Mensajes de Datos y Firmas Electronicas"
+
+estandares_internacionales:
+  - "ISO/IEC 27037:2012"
+  - "ISO/IEC 27042:2015"
+  - "NIST SP 800-101 r1"
+
+herramientas_autorizadas:
+  andriller:
+    uso: "Extraccion logica y fisica en dispositivos Android"
+  aleapp:
+    uso: "Android Logs Events And Protobuf Parser"

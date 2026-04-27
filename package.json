@@ -73,9 +73,11 @@
       "maintainer": "Laboratorio Forense <forense@ejemplo.gob.ve>",
       "icon": "public/icon.png",
       "desktop": {
-        "Name": "Forense Android",
-        "Comment": "Sistema de Gestión Forense para Dispositivos Android",
-        "Categories": "Utility;System;"
+        "entry": {
+          "Name": "Forense Android",
+          "Comment": "Sistema de Gestión Forense para Dispositivos Android",
+          "Categories": "Utility;System;"
+        }
       }
     },
     "deb": {
@@ -84,8 +86,7 @@
         "andriller",
         "aleapp"
       ],
-      "priority": "optional",
-      "section": "utils"
+      "priority": "optional"
     },
     "win": {
       "target": ["nsis"],

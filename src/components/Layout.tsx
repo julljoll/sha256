@@ -10,11 +10,13 @@ import {
 
 const menuItems = [
   { path: '/', label: 'Inicio', icon: Home },
-  { path: '/consignacion', label: '1. Recepción por Consignación', icon: FileText },
+  { path: '/consignacion', label: '1. Fase Inicial (Obtención)', icon: FileText },
   { path: '/prcc', label: '2. Cadena de Custodia (PRCC)', icon: Shield },
   { path: '/adquisicion', label: '3. Adquisición Forense', icon: Smartphone },
-  { path: '/analisis', label: '4. Análisis Técnico', icon: Microscope },
-  { path: '/informe', label: '5. Informe y Remisión', icon: FileCheck },
+  { path: '/analisis', label: '4. Fase Laboratorio (ALEAPP)', icon: Microscope },
+  { path: '/informe', label: '5. Dictamen e Informe', icon: FileCheck },
+  { path: '/disposicion-judicial', label: '6. Disposición Judicial', icon: Shield },
+  { path: '/disposicion-final', label: '7. Disposición Final', icon: Home },
 ];
 
 export default function Layout() {

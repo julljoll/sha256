@@ -6,6 +6,8 @@ import PrccPage from './pages/PrccPage';
 import AdquisicionPage from './pages/AdquisicionPage';
 import AnalisisPage from './pages/AnalisisPage';
 import InformePage from './pages/InformePage';
+import DisposicionJudicialPage from './pages/DisposicionJudicialPage';
+import DisposicionFinalPage from './pages/DisposicionFinalPage';
 
 function App() {
   return (
@@ -17,9 +19,12 @@ function App() {
         <Route path="adquisicion" element={<AdquisicionPage />} />
         <Route path="analisis" element={<AnalisisPage />} />
         <Route path="informe" element={<InformePage />} />
+        <Route path="disposicion-judicial" element={<DisposicionJudicialPage />} />
+        <Route path="disposicion-final" element={<DisposicionFinalPage />} />
       </Route>
     </Routes>
   );
 }
 
 export default App;
+

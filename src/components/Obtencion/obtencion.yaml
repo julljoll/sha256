@@ -1,0 +1,44 @@
+fase_inicial:
+  nombre: "Fase Inicial - Obtencion"
+  definicion: "Fase donde se obtienen las evidencias fisicas para iniciar la cadena de custodia"
+  
+  formas_obtencion:
+    - tipo: "Obtencion por Consignacion"
+      definicion: "Cuando el propietario o poseedor entrega voluntariamente la evidencia al organismo de investigacion"
+      escenarios:
+        - "Entrega voluntaria del dispositivo movil"
+        - "Consignacion de evidencia digital por ciudadanos"
+      
+      procedimientos:
+        - nombre: "Recepcion"
+          pasos:
+            - "Verificar identidad de quien consigna (cedula de identidad)"
+            - "Documentar motivo de la consignacion"
+            - "Registrar datos del dispositivo (marca, modelo, IMEI, IMEI2, numero telefonico)"
+            - "Verificar estado fisico del dispositivo"
+            
+        - nombre: "Fijacion"
+          medios:
+            - "Fijacion escrita: Acta de Obtencion por Consignacion"
+            - "Fijacion fotografica: estado del dispositivo, IMEI, pantalla, puertos"
+          datos:
+            - "Marca y modelo"
+            - "IMEI y IMEI2"
+            - "Numero de telefono/linea"
+            - "Estado de la bateria"
+            - "Danos fisicos"
+            - "Estado de la pantalla (encendido/apagado)"
+            
+    - tipo: "Obtencion Tecnica"
+      definicion: "Cuando el personal especializado acude al sitio del suceso o lugar de ubicacion de la evidencia"
+      procedimientos:
+        - "Proteccion: Aislar dispositivo (Modo Avion o Bolsa Faraday)"
+        - "Observacion Preliminar: Verificar estado del dispositivo"
+        - "Fijacion: Fotografias y actas"
+        - "Coleccion: Uso de write-blockers y extraccion con Andriller"
+        - "Embalaje y Rotulacion"
+        - "Registro en PRCC"
+        - "Traslado"
+      hash:
+        - "Calcular MD5 o SHA-256"
+        - "Garantizar inalterabilidad"

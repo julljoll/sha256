@@ -1,0 +1,23 @@
+planilla_registro_cadena_custodia:
+  nombre: "Planilla de Registro de Cadena de Custodia (PRCC)"
+  descripcion: "Documento fundamental para el seguimiento de la evidencia"
+  campos_obligatorios:
+    - "Nro de Expediente"
+    - "Nro de PRCC"
+    - "Despacho/Organismo"
+    - "Datos de la Evidencia"
+    - "Actividad de Transferencia (Entrega/Recibe)"
+  documentos_asociados:
+    - "Acta Policial"
+    - "Acta de Investigacion Penal"
+    - "Acta de Obtencion Tecnica"
+    - "Acta de Obtencion por Aseguramiento"
+    - "Acta de Obtencion por Consignacion"
+    - "Acta de Obtencion por Derivacion"
+    - "Acta de Disposicion Final"
+    - "Acta de Levantamiento de Cadáver"
+    - "Acta de Inspeccion"
+    - "Acta Pericial"
+    - "Planilla de Registro de Cadena de Custodia (PRCC)"
+    - "Dictamen Pericial"
+    - "Memorandos y Oficios"
