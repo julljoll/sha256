@@ -49,6 +49,11 @@
     "vite-plugin-pwa": "^1.2.0",
     "wait-on": "^9.0.5"
   },
+  "overrides": {
+    "vite-plugin-pwa": {
+      "vite": "$vite"
+    }
+  },
   "build": {
     "appId": "com.forense.android",
     "productName": "Forense Android",
