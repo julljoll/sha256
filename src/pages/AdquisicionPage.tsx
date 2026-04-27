@@ -1,90 +1,28 @@
-import { useState, useEffect } from 'react';
-import { useForenseStore } from '../store/forenseStore';
-import { Smartphone, Play, Square, Save, HardDrive } from 'lucide-react';
+import { useState } from 'react';
+import { useForenseStore, type Adquisicion } from '../store/forenseStore';
+import { Smartphone, Save, ShieldCheck } from 'lucide-react';
 
 export default function AdquisicionPage() {
-  const { dispositivoActual: dispositivo, setAdquisicionAndriller } = useForenseStore();
+  const { dispositivoActual: dispositivo, adquisicionAndriller: storeAdquisicion, setAdquisicionAndriller } = useForenseStore();
   
-  const [config, setConfig] = useState({
-    outputPath: '',
-    extractionType: 'logica' as 'logica' | 'fisica',
-    deviceId: '',
+  const [adquisicion, setAdquisicionLocal] = useState<Adquisicion>({
+    herramienta: 'andriller',
+    versionHerramienta: storeAdquisicion?.versionHerramienta || '',
+    tipoExtraccion: storeAdquisicion?.tipoExtraccion || 'logica',
+    rutaSalida: storeAdquisicion?.rutaSalida || '',
+    rutaImagenOrigen: storeAdquisicion?.rutaImagenOrigen || '',
+    hashOrigenSHA256: storeAdquisicion?.hashOrigenSHA256 || '',
+    hashCopiaSHA256: storeAdquisicion?.hashCopiaSHA256 || '',
+    hashesCoinciden: storeAdquisicion?.hashesCoinciden || false,
+    logEjecucion: storeAdquisicion?.logEjecucion || '',
+    pidProceso: 0,
   });
-  
-  const [isRunning, setIsRunning] = useState(false);
-  const [output, setOutput] = useState<string[]>([]);
-  const [error, setError] = useState<string[]>([]);
-  const [progress, setProgress] = useState(0);
-  const [completed, setCompleted] = useState(false);
 
-  useEffect(() => {
-    // Configurar listeners para output de Andriller
-    if (window.electronAPI) {
-      window.electronAPI.andriller.onOutput((data: string) => {
-        setOutput(prev => [...prev, data]);
-        setProgress(prev => Math.min(prev + 5, 95));
-      });
-      
-      window.electronAPI.andriller.onError((data: string) => {
-        setError(prev => [...prev, data]);
-      });
-    }
-  }, []);
+  const [saved, setSaved] = useState(false);
 
-  const handleSelectFolder = async () => {
-    if (window.electronAPI) {
-      const result = await window.electronAPI.dialog.selectFolder();
-      if (!result.canceled && result.filePaths.length > 0) {
-        setConfig({ ...config, outputPath: result.filePaths[0] });
-      }
-    }
-  };
-
-  const handleIniciarExtraccion = async () => {
-    if (!config.outputPath) return;
-    
-    setIsRunning(true);
-    setOutput([]);
-    setError([]);
-    setProgress(0);
-    setCompleted(false);
-
-    try {
-      const result = await window.electronAPI.andriller.start(config);
-      
-      if (result.success) {
-        setProgress(100);
-        setCompleted(true);
-        
-        // Guardar adquisición en el store
-        setAdquisicionAndriller({
-          herramienta: 'andriller',
-          versionHerramienta: '3.6.2', // Versión ejemplo
-          tipoExtraccion: config.extractionType,
-          rutaSalida: config.outputPath,
-          rutaImagenOrigen: '',
-          hashOrigenSHA256: '',
-          hashCopiaSHA256: '',
-          hashesCoinciden: true,
-          logEjecucion: result.output,
-          pidProceso: 0,
-        });
-      } else {
-        setError(prev => [...prev, `Error: ${result.error}`]);
-      }
-    } catch (err: any) {
-      setError(prev => [...prev, `Error crítico: ${err.message}`]);
-    } finally {
-      setIsRunning(false);
-    }
-  };
-
-  const handleCancelar = async () => {
-    if (window.electronAPI) {
-      await window.electronAPI.andriller.cancel();
-      setIsRunning(false);
-      setOutput(prev => [...prev, 'Extracción cancelada por el usuario']);
-    }
+  const handleGuardar = () => {
+    setAdquisicionAndriller(adquisicion);
+    setSaved(true);
   };
 
   return (
@@ -93,17 +31,17 @@ export default function AdquisicionPage() {
       <div>
         <h1 className="text-2xl font-bold text-white flex items-center gap-3">
           <Smartphone className="w-7 h-7 text-primary-500" />
-          Adquisición Forense con Andriller
+          3. Registro de Adquisición Forense
         </h1>
         <p className="text-gray-400 mt-1">
-          Extracción lógica/física del dispositivo en modo solo lectura
+          Documentación legal de la extracción lógica/física para mantener la integridad de la evidencia
         </p>
       </div>
 
       {/* Info del dispositivo */}
       {dispositivo && (
         <div className="forensic-card p-4">
-          <h3 className="text-sm font-medium text-gray-400 mb-2">Dispositivo Registrado</h3>
+          <h3 className="text-sm font-medium text-gray-400 mb-2">Dispositivo a Analizar</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div>
               <span className="text-gray-500">Marca:</span>
@@ -125,34 +63,25 @@ export default function AdquisicionPage() {
         </div>
       )}
 
-      {/* Configuración */}
+      {/* Formulario de Documentación */}
       <div className="forensic-card p-6">
         <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-          <HardDrive className="w-5 h-5" />
-          Configuración de Extracción
+          <ShieldCheck className="w-5 h-5" />
+          Datos Técnicos de la Adquisición
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              Directorio de Salida *
+              Versión de Andriller Utilizada *
             </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={config.outputPath}
-                readOnly
-                className="forensic-input flex-1"
-                placeholder="Seleccione carpeta..."
-              />
-              <button
-                onClick={handleSelectFolder}
-                disabled={isRunning}
-                className="forensic-btn forensic-btn-secondary"
-              >
-                Examinar
-              </button>
-            </div>
+            <input
+              type="text"
+              value={adquisicion.versionHerramienta}
+              onChange={(e) => setAdquisicionLocal({ ...adquisicion, versionHerramienta: e.target.value })}
+              className="forensic-input"
+              placeholder="Ej: 3.6.2"
+            />
           </div>
           
           <div>
@@ -160,121 +89,103 @@ export default function AdquisicionPage() {
               Tipo de Extracción *
             </label>
             <select
-              value={config.extractionType}
-              onChange={(e) => setConfig({ ...config, extractionType: e.target.value as 'logica' | 'fisica' })}
-              disabled={isRunning}
+              value={adquisicion.tipoExtraccion}
+              onChange={(e) => setAdquisicionLocal({ ...adquisicion, tipoExtraccion: e.target.value as 'logica' | 'fisica' })}
               className="forensic-input"
             >
-              <option value="logica">Extracción Lógica (Recomendado)</option>
-              <option value="fisica">Extracción Física (Root requerido)</option>
+              <option value="logica">Extracción Lógica</option>
+              <option value="fisica">Extracción Física</option>
             </select>
           </div>
-          
-          <div>
+
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              ID del Dispositivo (Opcional)
+              Ruta de Salida de la Adquisición *
             </label>
             <input
               type="text"
-              value={config.deviceId}
-              onChange={(e) => setConfig({ ...config, deviceId: e.target.value })}
-              disabled={isRunning}
+              value={adquisicion.rutaSalida}
+              onChange={(e) => setAdquisicionLocal({ ...adquisicion, rutaSalida: e.target.value })}
               className="forensic-input"
-              placeholder="Ej: emulator-5554 o serial USB"
+              placeholder="Ej: /casos/MP-2024-001/adquisicion_logica"
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <div className="border-t border-forensic-light my-4"></div>
+            <h3 className="text-md font-medium text-white mb-4">Validación de Integridad Forense</h3>
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Hash SHA-256 (Imagen Original) *
+            </label>
+            <input
+              type="text"
+              value={adquisicion.hashOrigenSHA256}
+              onChange={(e) => setAdquisicionLocal({ ...adquisicion, hashOrigenSHA256: e.target.value })}
+              className="forensic-input font-mono text-xs"
+              placeholder="Ingrese el hash SHA-256 original"
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Hash SHA-256 (Copia Obtenida) *
+            </label>
+            <input
+              type="text"
+              value={adquisicion.hashCopiaSHA256}
+              onChange={(e) => setAdquisicionLocal({ ...adquisicion, hashCopiaSHA256: e.target.value })}
+              className="forensic-input font-mono text-xs"
+              placeholder="Ingrese el hash SHA-256 de la copia de trabajo"
+            />
+          </div>
+
+          <div className="md:col-span-2 flex items-center gap-3 my-2">
+            <input
+              type="checkbox"
+              id="hashesMatch"
+              checked={adquisicion.hashesCoinciden}
+              onChange={(e) => setAdquisicionLocal({ ...adquisicion, hashesCoinciden: e.target.checked })}
+              className="w-5 h-5 rounded border-gray-600 text-primary-600 focus:ring-primary-500"
+            />
+            <label htmlFor="hashesMatch" className="text-sm font-medium text-gray-300">
+              Certifico que los hashes coinciden y la integridad de la evidencia se mantiene intacta
+            </label>
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Observaciones del Proceso / Log de Extracción
+            </label>
+            <textarea
+              value={adquisicion.logEjecucion}
+              onChange={(e) => setAdquisicionLocal({ ...adquisicion, logEjecucion: e.target.value })}
+              className="forensic-input"
+              rows={4}
+              placeholder="Detalles sobre bloqueos, errores o particularidades de la extracción..."
             />
           </div>
         </div>
 
-        {/* Botones de control */}
-        <div className="mt-6 flex gap-4">
-          {!isRunning ? (
-            <button
-              onClick={handleIniciarExtraccion}
-              disabled={!config.outputPath}
-              className="forensic-btn forensic-btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              <Play className="w-4 h-4" />
-              Iniciar Extracción
-            </button>
-          ) : (
-            <button
-              onClick={handleCancelar}
-              className="forensic-btn bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
-            >
-              <Square className="w-4 h-4" />
-              Cancelar
-            </button>
-          )}
-        </div>
-
-        {/* Barra de progreso */}
-        {(isRunning || completed) && (
-          <div className="mt-6">
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-400">Progreso</span>
-              <span className="text-white">{progress}%</span>
-            </div>
-            <div className="w-full bg-forensic-dark rounded-full h-2">
-              <div 
-                className={`h-2 rounded-full transition-all duration-300 ${completed ? 'bg-green-500' : 'bg-primary-500'}`}
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+        {saved && (
+          <div className="mt-4 p-4 bg-green-900/30 border border-green-700 rounded-lg">
+            <p className="text-green-400">✓ Registro de adquisición forense guardado exitosamente</p>
           </div>
         )}
+
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={handleGuardar}
+            disabled={!adquisicion.versionHerramienta || !adquisicion.rutaSalida || !adquisicion.hashOrigenSHA256 || !adquisicion.hashCopiaSHA256 || !adquisicion.hashesCoinciden}
+            className="forensic-btn forensic-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Save className="w-4 h-4 inline mr-2" />
+            Guardar Registro
+          </button>
+        </div>
       </div>
-
-      {/* Output en vivo */}
-      {(output.length > 0 || error.length > 0) && (
-        <div className="forensic-card p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Registro de Ejecución</h2>
-          
-          <div className="space-y-2 max-h-96 overflow-auto font-mono text-sm">
-            {output.map((line, i) => (
-              <div key={i} className="text-green-400">
-                <span className="text-gray-500">[{new Date().toLocaleTimeString()}]</span> {line}
-              </div>
-            ))}
-            
-            {error.map((line, i) => (
-              <div key={i} className="text-red-400">
-                <span className="text-gray-500">[{new Date().toLocaleTimeString()}]</span> {line}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Resumen final */}
-      {completed && (
-        <div className="forensic-card p-6 border-green-700 bg-green-900/20">
-          <h2 className="text-lg font-semibold text-green-400 mb-4 flex items-center gap-2">
-            <Save className="w-5 h-5" />
-            Extracción Completada Exitosamente
-          </h2>
-          
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <span className="text-gray-400">Herramienta:</span>
-              <span className="text-white ml-2">Andriller v3.6.2</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Tipo:</span>
-              <span className="text-white ml-2 capitalize">{config.extractionType}</span>
-            </div>
-            <div className="col-span-2">
-              <span className="text-gray-400">Ruta de salida:</span>
-              <span className="text-white ml-2 break-all">{config.outputPath}</span>
-            </div>
-          </div>
-          
-          <div className="mt-4 p-4 bg-forensic-dark rounded-lg">
-            <p className="text-xs text-gray-400">
-              ⚠️ Recuerde calcular y verificar los hashes SHA-256 y MD5 de la imagen obtenida para garantizar la integridad de la evidencia.
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
