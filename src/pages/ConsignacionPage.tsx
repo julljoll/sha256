@@ -78,11 +78,7 @@ export default function ConsignacionPage() {
           </span>
           <span className="text-gray-500">→</span>
           <span className={`px-3 py-1 rounded-full ${step >= 2 ? 'bg-primary-600' : 'bg-forensic-light'} text-white`}>
-            2. Dispositivo
-          </span>
-          <span className="text-gray-500">→</span>
-          <span className={`px-3 py-1 rounded-full ${step >= 3 ? 'bg-primary-600' : 'bg-forensic-light'} text-white`}>
-            3. PRCC
+            2. Fijación del Dispositivo
           </span>
         </div>
       </div>
@@ -328,6 +324,19 @@ export default function ConsignacionPage() {
             </div>
           </div>
 
+          {saved && (
+            <div className="mt-4 p-4 bg-green-900/30 border border-green-700 rounded-lg flex justify-between items-center">
+              <p className="text-green-400">✓ Consignación guardada exitosamente</p>
+              <button 
+                onClick={() => window.print()}
+                className="forensic-btn forensic-btn-primary flex items-center gap-2"
+              >
+                <FileText className="w-4 h-4" />
+                Imprimir Planilla de Consignación
+              </button>
+            </div>
+          )}
+
           <div className="mt-6 flex justify-between">
             <button
               onClick={() => setStep(1)}
@@ -336,166 +345,12 @@ export default function ConsignacionPage() {
               ← Atrás
             </button>
             <button
-              onClick={() => setStep(3)}
+              onClick={handleGuardarConsignacion}
               disabled={!dispositivo.marca || !dispositivo.modelo || !dispositivo.imei}
               className="forensic-btn forensic-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Continuar →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Step 3: PRCC */}
-      {step === 3 && (
-        <div className="forensic-card p-6">
-          <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-            <Save className="w-5 h-5" />
-            Planilla de Registro de Cadena de Custodia (PRCC)
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Número PRCC *
-              </label>
-              <input
-                type="text"
-                value={prcc.numeroPRCC}
-                onChange={(e) => setPrcCLocal({ ...prcc, numeroPRCC: e.target.value })}
-                className="forensic-input"
-                placeholder="Ej: PRCC-2024-001234"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Tipo *
-              </label>
-              <select
-                value={prcc.tipo}
-                onChange={(e) => setPrcCLocal({ ...prcc, tipo: e.target.value as 'principal' | 'derivada' })}
-                className="forensic-input"
-              >
-                <option value="principal">Principal</option>
-                <option value="derivada">Derivada</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Funcionario Colector *
-              </label>
-              <input
-                type="text"
-                value={prcc.funcionarioColector}
-                onChange={(e) => setPrcCLocal({ ...prcc, funcionarioColector: e.target.value })}
-                className="forensic-input"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Cargo
-              </label>
-              <input
-                type="text"
-                value={prcc.cargo}
-                onChange={(e) => setPrcCLocal({ ...prcc, cargo: e.target.value })}
-                className="forensic-input"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Órgano
-              </label>
-              <input
-                type="text"
-                value={prcc.organo}
-                onChange={(e) => setPrcCLocal({ ...prcc, organo: e.target.value })}
-                className="forensic-input"
-                placeholder="Ej: CICPC, PNB, MP"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Tipo de Embalaje *
-              </label>
-              <select
-                value={prcc.tipoEmbalaje}
-                onChange={(e) => setPrcCLocal({ ...prcc, tipoEmbalaje: e.target.value as any })}
-                className="forensic-input"
-              >
-                <option value="bolsa">Bolsa</option>
-                <option value="caja">Caja</option>
-                <option value="sobre">Sobre</option>
-                <option value="otro">Otro</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Número de Precinto
-              </label>
-              <input
-                type="text"
-                value={prcc.numeroPrecinto}
-                onChange={(e) => setPrcCLocal({ ...prcc, numeroPrecinto: e.target.value })}
-                className="forensic-input"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Estado del Embalaje *
-              </label>
-              <select
-                value={prcc.estadoEmbalaje}
-                onChange={(e) => setPrcCLocal({ ...prcc, estadoEmbalaje: e.target.value as any })}
-                className="forensic-input"
-              >
-                <option value="buenas">Buenas</option>
-                <option value="deterioradas">Deterioradas</option>
-                <option value="rotas">Rotas</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Nombre del Firmante *
-              </label>
-              <input
-                type="text"
-                value={prcc.nombreFirmante}
-                onChange={(e) => setPrcCLocal({ ...prcc, nombreFirmante: e.target.value })}
-                className="forensic-input"
-                placeholder="Persona que entrega la evidencia"
-              />
-            </div>
-          </div>
-
-          {saved && (
-            <div className="mt-4 p-4 bg-green-900/30 border border-green-700 rounded-lg">
-              <p className="text-green-400">✓ Consignación guardada exitosamente</p>
-            </div>
-          )}
-
-          <div className="mt-6 flex justify-between">
-            <button
-              onClick={() => setStep(2)}
-              className="forensic-btn forensic-btn-secondary"
-            >
-              ← Atrás
-            </button>
-            <button
-              onClick={handleGuardarConsignacion}
-              disabled={!prcc.numeroPRCC || !prcc.funcionarioColector}
-              className="forensic-btn forensic-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-            >
               <Save className="w-4 h-4 inline mr-2" />
-              Guardar Consignación
+              Guardar y Finalizar
             </button>
           </div>
         </div>

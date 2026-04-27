@@ -10,10 +10,11 @@ import {
 
 const menuItems = [
   { path: '/', label: 'Inicio', icon: Home },
-  { path: '/consignacion', label: 'Consignación', icon: FileText },
-  { path: '/adquisicion', label: 'Adquisición (Andriller)', icon: Smartphone },
-  { path: '/analisis', label: 'Análisis (ALEAPP)', icon: Microscope },
-  { path: '/informe', label: 'Informe Técnico', icon: FileCheck },
+  { path: '/consignacion', label: '1. Recepción por Consignación', icon: FileText },
+  { path: '/prcc', label: '2. Cadena de Custodia (PRCC)', icon: Shield },
+  { path: '/adquisicion', label: '3. Adquisición Forense', icon: Smartphone },
+  { path: '/analisis', label: '4. Análisis Técnico', icon: Microscope },
+  { path: '/informe', label: '5. Informe y Remisión', icon: FileCheck },
 ];
 
 export default function Layout() {
