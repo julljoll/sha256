@@ -50,7 +50,7 @@ export interface Adquisicion {
   casoId?: number;
   herramienta: 'andriller' | 'aleapp';
   versionHerramienta: string;
-  tipoExtraccion: 'logica' | 'fisica';
+  tipoExtraccion: 'logica' | 'fisica' | 'analisis';
   rutaSalida: string;
   rutaImagenOrigen: string;
   hashOrigenSHA256: string;

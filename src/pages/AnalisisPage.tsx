@@ -229,7 +229,7 @@ export default function AnalisisPage() {
         </div>
 
         {/* Barra de progreso */}
-        {isRunning || completed && (
+        {(isRunning || completed) && (
           <div className="mt-6">
             <div className="flex justify-between text-sm mb-2">
               <span className="text-gray-400">Progreso</span>

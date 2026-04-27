@@ -2,7 +2,6 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { 
   Smartphone, 
   FileText, 
-  HardDrive, 
   Microscope, 
   FileCheck,
   Home,

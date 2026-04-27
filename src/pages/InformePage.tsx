@@ -3,7 +3,7 @@ import { useForenseStore } from '../store/forenseStore';
 import { FileCheck, Save, Download, Printer } from 'lucide-react';
 
 export default function InformePage() {
-  const { caso, dispositivo, prcc, adquisicionAndriller, adquisicionAleapp } = useForenseStore();
+  const { casoActual: caso, dispositivoActual: dispositivo, prccActual: prcc, adquisicionAndriller } = useForenseStore();
   
   const [informe, setInforme] = useState({
     motivo: '',

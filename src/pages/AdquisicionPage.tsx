@@ -3,7 +3,7 @@ import { useForenseStore } from '../store/forenseStore';
 import { Smartphone, Play, Square, Save, HardDrive } from 'lucide-react';
 
 export default function AdquisicionPage() {
-  const { dispositivo, prcc, setAdquisicionAndriller } = useForenseStore();
+  const { dispositivoActual: dispositivo, setAdquisicionAndriller } = useForenseStore();
   
   const [config, setConfig] = useState({
     outputPath: '',
@@ -208,7 +208,7 @@ export default function AdquisicionPage() {
         </div>
 
         {/* Barra de progreso */}
-        {isRunning || completed && (
+        {(isRunning || completed) && (
           <div className="mt-6">
             <div className="flex justify-between text-sm mb-2">
               <span className="text-gray-400">Progreso</span>
