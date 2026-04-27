@@ -1,15 +1,18 @@
 fase_disposicion_final:
-  nombre: "Fase de Disposicion Final - Cierre"
-  definicion: "Fase final que pone fin al tratamiento de las evidencias"
+  nombre: "Fase de Disposición Final - Cierre"
+  definicion: "Fase final que pone fin al tratamiento de las evidencias."
   
   formas_cierre:
-    - "Devolucion: restituir a quien tenga legitimo derecho (autorizacion judicial)"
-    - "Entrega: otorgar a persona juridica autorizada (autorizacion judicial)"
-    - "Destruccion: inutilizar evidencia sin interes (autorizacion judicial)"
-    - "Consumida en Peritaje: agotada durante analisis"
-    
+    - tipo: "DEVOLUCIÓN"
+      descripcion: "Restitución al propietario legítimo con orden judicial."
+      
+    - tipo: "DESTRUCCIÓN"
+      descripcion: "Inutilización de evidencia sin interés criminalístico."
+      
+    - tipo: "CONSUMIDA EN PERITAJE"
+      descripcion: "Evidencia agotada durante el análisis técnico."
+      
   procedimientos:
-    - "Ejecucion: materializar devolucion, entrega o destruccion"
-    - "Cierre de PRCC: dejar constancia en observaciones y remitir al expediente"
-    
-  documento_asociado: "Acta de Disposicion Final de Evidencias"
+    - "Ejecución de la Disposición"
+    - "Cierre de PRCC (Observaciones finales)"
+    - "Acta de Disposición Final"

@@ -1,7 +1,7 @@
 import { useState, useId } from 'react';
 import { Link } from 'react-router-dom';
 import { useForenseStore, type Adquisicion } from '../../store/forenseStore';
-import { Microscope, Save, Activity, FileJson, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Microscope, Save, Activity, FileJson, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function AnalisisForense() {
   const { adquisicionAndriller, adquisicionAleapp: storeAnalisis, setAdquisicionAleapp } = useForenseStore();

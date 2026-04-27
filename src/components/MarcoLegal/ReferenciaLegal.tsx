@@ -1,4 +1,4 @@
-import { Scale, Book, Shield, ExternalLink } from 'lucide-react';
+import { Scale, Book, Shield } from 'lucide-react';
 
 export default function ReferenciaLegal() {
   return (

@@ -1,8 +1,17 @@
 fase_disposicion_judicial:
-  nombre: "Fase de Disposicion Judicial"
-  definicion: "Momento en que la evidencia pasa a disposicion del Poder Judicial tras admitirse la acusacion"
+  nombre: "Fase de Disposición Judicial"
+  definicion: "Momento en que la evidencia pasa a disposición del Poder Judicial tras admitirse la acusación."
   
-  procesos:
-    - "Resguardo Judicial: en areas especializadas del Poder Judicial"
-    - "Exhibicion en Audiencia: cumplir procedimiento de traslado y transferencia"
-  documento_asociado: "Acta de Exhibicion de Evidencias"
+  actividades:
+    - nombre: "Resguardo Judicial"
+      descripcion: "Custodia en áreas especializadas del Poder Judicial."
+      
+    - nombre: "Exhibición en Audiencia"
+      descripcion: "Traslado y transferencia para valoración en juicio."
+      documento: "Acta de Exhibición de Evidencias"
+      
+  responsables:
+    - "Juez"
+    - "Fiscal"
+    - "Perito Informático (Exposición)"
+    - "Secretario de Sala"

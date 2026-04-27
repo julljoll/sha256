@@ -1,21 +1,32 @@
-import { useState, memo } from 'react';
+import { useState, memo, useId } from 'react';
 import { useForenseStore, type PRCC } from '../../store/forenseStore';
-import { ClipboardList, FileText } from 'lucide-react';
+import { ClipboardList, FileText, User, MapPin, Printer } from 'lucide-react';
 
-const InputField = memo(({ label, value, onChange, placeholder }: any) => (
-  <div>
-    <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">{label}</label>
-    <input className="forensic-input py-1.5 text-sm" value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
-  </div>
-));
+const InputField = memo(({ label, value, onChange, placeholder, type = 'text' }: any) => {
+  const id = useId();
+  return (
+    <div className="space-y-1.5">
+      <label htmlFor={id} className="forensic-label">{label}</label>
+      <input 
+        id={id}
+        type={type}
+        className="forensic-input" 
+        value={value} 
+        placeholder={placeholder} 
+        onChange={(e) => onChange(e.target.value)} 
+      />
+    </div>
+  );
+});
 
 export default function FormularioPrcc() {
-  const { prccActual: storePrcc, setPRCC } = useForenseStore();
+  const { prccActual: storePrcc, setPRCC, casoActual, dispositivoActual } = useForenseStore();
   const [prcc, setPrcCLocal] = useState<PRCC>(storePrcc || {
     expediente: '', prcc: '', despachoInstruye: '', organismoInstruye: '', despachoInicia: '', organismoInicia: '',
-    direccion: '', fechaHora: '', formaObtencion: '',
+    direccion: '', fechaHora: '', formaObtencion: 'Consignación',
     fijacion: { nombre: '', ci: '' }, coleccion: { nombre: '', ci: '' }, 
-    descripcion: '', motivoTransferencia: '',
+    descripcion: dispositivoActual ? `${dispositivoActual.marca} ${dispositivoActual.modelo}, IMEI: ${dispositivoActual.imei}` : '', 
+    motivoTransferencia: 'Peritaje Informático',
     entrega: { nombre: '', organismo: '', despacho: '', ci: '' }, recibe: { nombre: '', organismo: '', despacho: '', ci: '' }, observaciones: ''
   });
 
@@ -25,37 +36,94 @@ export default function FormularioPrcc() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="forensic-card p-6">
-        <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2 border-b border-forensic-light pb-2">
-          <ClipboardList className="text-primary-500" /> PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC)
-        </h2>
+    <div className="space-y-8 animate-fade-in max-w-5xl mx-auto pb-20">
+      <div className="forensic-card p-8">
+        <div className="flex items-center justify-between mb-8 border-b border-fluent-border pb-6">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-fluent-accent/10 rounded-xl text-fluent-accent">
+              <ClipboardList size={24} />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-white uppercase tracking-tight">Registro de Cadena de Custodia (PRCC)</h2>
+              <p className="text-xs text-white/40 font-semibold uppercase tracking-widest mt-1">Documento de Trazabilidad Legal</p>
+            </div>
+          </div>
+          <button 
+            onClick={handlePrint} 
+            className="forensic-btn forensic-btn-primary flex items-center gap-2 px-8 print:hidden"
+          >
+            <Printer size={18} /> Imprimir PRCC
+          </button>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-4">
-            <h3 className="text-xs font-bold text-primary-400 uppercase">I. Datos Generales</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <InputField label="N° Expediente" value={prcc.expediente} onChange={(v: string) => setPrcCLocal({...prcc, expediente: v})} />
-              <InputField label="N° PRCC" value={prcc.prcc} onChange={(v: string) => setPrcCLocal({...prcc, prcc: v})} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Section I: General Data */}
+          <section className="space-y-6">
+            <h3 className="text-[10px] font-bold text-fluent-accent-light uppercase tracking-[0.2em] flex items-center gap-2">
+              <MapPin size={14} /> I. Datos de la Obtención
+            </h3>
+            <div className="grid grid-cols-2 gap-6">
+              <InputField label="N° Expediente" value={casoActual?.numeroCaso || prcc.expediente} onChange={(v: string) => setPrcCLocal({...prcc, expediente: v})} />
+              <InputField label="N° de Registro PRCC" value={prcc.prcc} onChange={(v: string) => setPrcCLocal({...prcc, prcc: v})} />
             </div>
-            <InputField label="Despacho Instruye" value={prcc.despachoInstruye} onChange={(v: string) => setPrcCLocal({...prcc, despachoInstruye: v})} />
-            <InputField label="Organismo Instruye" value={prcc.organismoInstruye} onChange={(v: string) => setPrcCLocal({...prcc, organismoInstruye: v})} />
-          </div>
+            <InputField label="Despacho que Instruye" value={prcc.despachoInstruye} onChange={(v: string) => setPrcCLocal({...prcc, despachoInstruye: v})} />
+            <InputField label="Organismo que Inicia" value={prcc.organismoInicia} onChange={(v: string) => setPrcCLocal({...prcc, organismoInicia: v})} />
+            <InputField label="Dirección / Lugar de Obtención" value={prcc.direccion} onChange={(v: string) => setPrcCLocal({...prcc, direccion: v})} />
+          </section>
           
-          <div className="space-y-4">
-            <h3 className="text-xs font-bold text-primary-400 uppercase">V. Transferencia</h3>
-            <InputField label="Motivo de Transferencia" value={prcc.motivoTransferencia} onChange={(v: string) => setPrcCLocal({...prcc, motivoTransferencia: v})} />
-            <div className="grid grid-cols-2 gap-4">
-              <InputField label="Entrega (Nombre)" value={prcc.entrega.nombre} onChange={(v: string) => setPrcCLocal({...prcc, entrega: {...prcc.entrega, nombre: v}})} />
-              <InputField label="Recibe (Nombre)" value={prcc.recibe.nombre} onChange={(v: string) => setPrcCLocal({...prcc, recibe: {...prcc.recibe, nombre: v}})} />
+          {/* Section II: Description */}
+          <section className="space-y-6">
+            <h3 className="text-[10px] font-bold text-fluent-accent-light uppercase tracking-[0.2em] flex items-center gap-2">
+              <FileText size={14} /> II. Descripción de la Evidencia
+            </h3>
+            <textarea 
+              className="forensic-input" 
+              rows={4} 
+              value={prcc.descripcion} 
+              onChange={(e) => setPrcCLocal({...prcc, descripcion: e.target.value})}
+              placeholder="Describa detalladamente la evidencia física o digital..."
+            />
+            <div className="grid grid-cols-1 gap-6">
+              <InputField label="Motivo de la Transferencia" value={prcc.motivoTransferencia} onChange={(v: string) => setPrcCLocal({...prcc, motivoTransferencia: v})} />
             </div>
-          </div>
+          </section>
+
+          {/* Section III: Transfer */}
+          <section className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 pt-8 border-t border-fluent-border">
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-bold text-fluent-accent-light uppercase tracking-[0.2em] flex items-center gap-2">
+                <User size={14} /> Datos de Entrega
+              </h3>
+              <InputField label="Nombre Completo" value={prcc.entrega.nombre} onChange={(v: string) => setPrcCLocal({...prcc, entrega: {...prcc.entrega, nombre: v}})} />
+              <div className="grid grid-cols-2 gap-6">
+                <InputField label="Cédula" value={prcc.entrega.ci} onChange={(v: string) => setPrcCLocal({...prcc, entrega: {...prcc.entrega, ci: v}})} />
+                <InputField label="Organismo" value={prcc.entrega.organismo} onChange={(v: string) => setPrcCLocal({...prcc, entrega: {...prcc.entrega, organismo: v}})} />
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-bold text-fluent-accent-light uppercase tracking-[0.2em] flex items-center gap-2">
+                <User size={14} /> Datos de Recepción
+              </h3>
+              <InputField label="Nombre Completo" value={prcc.recibe.nombre} onChange={(v: string) => setPrcCLocal({...prcc, recibe: {...prcc.recibe, nombre: v}})} />
+              <div className="grid grid-cols-2 gap-6">
+                <InputField label="Cédula" value={prcc.recibe.ci} onChange={(v: string) => setPrcCLocal({...prcc, recibe: {...prcc.recibe, ci: v}})} />
+                <InputField label="Organismo" value={prcc.recibe.organismo} onChange={(v: string) => setPrcCLocal({...prcc, recibe: {...prcc.recibe, organismo: v}})} />
+              </div>
+            </div>
+          </section>
         </div>
 
-        <div className="mt-8 flex justify-end print:hidden">
-          <button onClick={handlePrint} className="forensic-btn forensic-btn-primary">
-            <FileText size={16} className="mr-2" /> Generar e Imprimir PRCC
-          </button>
+        <div className="mt-12 p-6 bg-fluent-surfaceActive/20 rounded-fluent-card border border-fluent-border flex items-start gap-4">
+          <div className="p-2 bg-fluent-accent/10 rounded-lg text-fluent-accent shrink-0">
+            <ClipboardList size={20} />
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-1">Observaciones de Integridad</h4>
+            <p className="text-xs text-white/40 leading-relaxed">
+              Debe hacerse constar el estado de los precintos y sellos al momento del traspaso. Cualquier alteración observada debe ser documentada de inmediato en este registro.
+            </p>
+          </div>
         </div>
       </div>
     </div>

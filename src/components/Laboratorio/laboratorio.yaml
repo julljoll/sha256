@@ -1,50 +1,32 @@
 fase_laboratorio:
-  nombre: "Fase de Laboratorio - Peritacion"
-  definicion: "Fase intermedia destinada a la peritacion de evidencias previamente obtenidas"
+  nombre: "Fase de Laboratorio - Peritación"
+  definicion: "Fase intermedia destinada a la peritación de evidencias mediante técnicas técnico-científicas."
   
-  proceso_peritacion:
-    - paso: "Recepcion en Laboratorio"
-      acciones:
-        - "Verificar precintos de seguridad"
-        - "Recalcular Hash para confirmar integridad"
-        - "Cotejar PRCC con el embalaje"
-        - "Verificar correspondencia con oficio de remision"
-      iso: "ISO/IEC 27042:2015"
+  procedimientos:
+    - nombre: "Recepción"
+      actividades: ["Verificar precintos", "Cotejar PRCC", "Recalcular Hash"]
       
-    - paso: "Designacion"
-      acciones:
-        - "Registrar en sistema manual o automatizado"
-        - "Asignar perito responsable"
-        - "Firmar controles y PRCC"
-        
-    - paso: "Peritaje"
+    - nombre: "Peritaje"
       etapas:
-        - "Valoracion: apreciar contexto y planificar tecnicas"
-        - "Descripcion: detallar caracteristicas de la evidencia"
-        - "Analisis: aplicar metodos y tecnicas (ALEAPP y Andriller)"
-        - "Interpretacion: evaluar datos resultantes"
-        - "Conclusion: juicio de valor tecnico-cientifico"
-      herramientas:
-        - "Andriller: extraccion logica y fisica"
-        - "ALEAPP: parseo de SQLite y Protobuf"
+        - "Valoración: Apreciar contexto"
+        - "Descripción: Detallar estado de hallazgo"
+        - "Análisis: Aplicar Andriller/ALEAPP"
+        - "Interpretación: Evaluar resultados"
+        - "Conclusión: Juicio de valor técnico"
         
-    - paso: "Remision"
-      acciones:
-        - "Entregar dictamen pericial"
-        - "Remitir evidencias y PRCC al despacho solicitante"
-        - "Acotar en PRCC la remision"
+    - nombre: "Dictamen Pericial"
+      estructura:
+        - "1. Motivo"
+        - "2. Descripción"
+        - "3. Exámenes Practicados"
+        - "4. Resultados"
+        - "5. Conclusiones"
+        - "6. Fundamentación Legal"
+        - "7. Consumo de Evidencia"
 
-dictamen_pericial:
-  estructura_obligatoria:
-    - "Motivo: razon por la cual se practica la peritacion"
-    - "Descripcion: estado en que se hallo y recibio la evidencia"
-    - "Examenes Practicados: detalle de softwares (versiones Andriller y ALEAPP), tecnicas y valores Hash"
-    - "Resultados: tabla con nombre nativo, fechas, ruta, tamano y Hash individual"
-    - "Conclusiones: juicio de valor tecnico-cientifico sin precalificacion juridica"
-    - "Consumo de Evidencia: constancia si fue consumida o alterada"
-  
-  formalidades:
-    - "Presentacion por escrito"
-    - "Firma del Perito Informatico"
-    - "Sello del perito"
-    - "Version exacta de herramientas usadas"
+  herramientas:
+    - "Andriller v3.6.2 (Extracción)"
+    - "ALEAPP v2.1.0 (Análisis)"
+    
+  estandares:
+    - "ISO/IEC 27042:2015"
