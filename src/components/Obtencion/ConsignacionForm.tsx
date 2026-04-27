@@ -1,6 +1,6 @@
 import { useState, memo, useId } from 'react';
-import { useForenseStore, type Caso, type Dispositivo, type PRCC } from '../../store/forenseStore';
-import { FileText, Camera, Printer, CheckCircle2, ShieldCheck, Smartphone, Info } from 'lucide-react';
+import { useForenseStore, type PRCC } from '../../store/forenseStore';
+import { FileText, Printer, CheckCircle2, ShieldCheck, Smartphone, Info } from 'lucide-react';
 
 const InputField = memo(({ label, value, onChange, placeholder, type = 'text', required }: any) => {
   const id = useId();
